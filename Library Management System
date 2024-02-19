@@ -1,0 +1,68 @@
+class Kütüphane:
+    def __init__(self):
+        self.dosya = open("kitaplar.txt", "a+")
+
+    def __del__(self):
+        self.dosya.close()
+
+    def kitapları_listele(self):
+        self.dosya.seek(0)  
+        kitaplar = self.dosya.read().splitlines()
+        for kitap in kitaplar:
+            kitap_bilgisi = kitap.split(',')
+            print(f"Kitap: {kitap_bilgisi[0]}, Yazar: {kitap_bilgisi[1]}")
+
+    def kitap_ekle(self):
+        baslik = input("Kitap başlığını girin: ")
+        yazar = input("Kitap yazarını girin: ")
+        yayin_yili = input("Kitabın yayın yılını girin: ")
+        sayfa_sayisi = input("Kitabın sayfa sayısını girin: ")
+
+        kitap_bilgisi = f"{baslik},{yazar},{yayin_yili},{sayfa_sayisi}\n"
+        self.dosya.write(kitap_bilgisi)
+        print("Kitap başarıyla eklendi!")
+
+    def kitap_sil(self):
+        silinecek_baslik = input("Silmek istediğiniz kitabın başlığını girin: ")
+
+        self.dosya.seek(0)  
+        kitaplar = self.dosya.read().splitlines()
+
+        bulundu = False
+        güncellenmiş_kitaplar = []
+        for kitap in kitaplar:
+            if silinecek_baslik not in kitap:
+                güncellenmiş_kitaplar.append(kitap)
+            else:
+                bulundu = True
+
+        if bulundu:
+            self.dosya.seek(0)  
+            self.dosya.truncate()  
+            for kitap in güncellenmiş_kitaplar:
+                self.dosya.write(kitap + '\n')
+            print(f"'{silinecek_baslik}' başlıklı kitap başarıyla silindi!")
+        else:
+            print(f"'{silinecek_baslik}' başlıklı kitap kütüphanede bulunamadı.")
+
+ 
+kütüphane = Kütüphane()
+
+ 
+print("*** MENÜ ***")
+print("1) Kitapları Listele")
+print("2) Kitap Ekle")
+print("3) Kitap Sil")
+
+ 
+menü_seçimi = input("Seçiminizi girin: ")
+
+ 
+if menü_seçimi == "1":
+    kütüphane.kitapları_listele()
+elif menü_seçimi == "2":
+    kütüphane.kitap_ekle()
+elif menü_seçimi == "3":
+    kütüphane.kitap_sil()
+else:
+    print("Geçersiz seçim! Lütfen geçerli bir seçenek seçin.")

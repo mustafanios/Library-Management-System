@@ -1,2 +1,0 @@
-# mustafaios
-Library Management System
