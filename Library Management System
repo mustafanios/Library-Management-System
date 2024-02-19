@@ -1,6 +1,6 @@
 class Kütüphane:
     def __init__(self):
-        self.dosya = open("kitaplar.txt", "a+")
+        self.dosya = open("books.txt", "a+")
 
     def __del__(self):
         self.dosya.close()
